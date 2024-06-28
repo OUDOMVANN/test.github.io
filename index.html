@@ -195,8 +195,8 @@
             .then(blob => {
                 imageRef.put(blob).then(() => {
                     console.log('Image uploaded successfully');
-                    // You can add further logic here, such as saving social media text and notes to a database
-                    // or displaying a success message to the user
+                    // Display success message
+                    document.getElementById(`successMessage${imageId.slice(-1)}`).innerText = 'Saved successfully!';
                 });
             })
             .catch(error => console.error('Error uploading image: ', error));
