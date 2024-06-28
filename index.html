@@ -4,10 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weekly Planner</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Include Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0qP-Nd2_vUMclBs7t_7LRLJT9lPn7dTk",
+            authDomain: "planner-a66be.firebaseapp.com",
+            projectId: "planner-a66be",
+            storageBucket: "planner-a66be.appspot.com",
+            messagingSenderId: "275446683353",
+            appId: "1:275446683353:web:c7b155b01592b17c9f90c8",
+            measurementId: "G-VZ9BQEMJPN"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+
+        // Function to handle image upload and preview
+        function loadImage(event, imgId) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(imgId).setAttribute('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // Function to save content to Firebase Storage
+        function saveContent(imageId, socialMediaTextId, notesId) {
+            const imageFile = document.getElementById(imageId).src;
+            const socialMediaText = document.getElementById(socialMediaTextId).innerText;
+            const notes = document.getElementById(notesId).innerText;
+
+            // Generate a unique key for each day's data (you can modify this as per your requirement)
+            const storageRef = ref(storage, `images/${imageId}`);
+
+            fetch(imageFile)
+                .then(response => response.blob())
+                .then(blob => {
+                    uploadBytes(storageRef, blob).then(() => {
+                        console.log('Image uploaded successfully');
+                        // Display success message
+                        document.getElementById(`successMessage${imageId.slice(-1)}`).innerText = 'Saved successfully!';
+                        // Animate save button
+                        document.getElementById(`saveButton${imageId.slice(-1)}`).classList.add('success-animation');
+                        setTimeout(() => {
+                            document.getElementById(`saveButton${imageId.slice(-1)}`).classList.remove('success-animation');
+                        }, 1000); // Remove animation class after 1 second
+                    }).catch(error => {
+                        console.error('Error uploading image: ', error);
+                        document.getElementById(`successMessage${imageId.slice(-1)}`).innerText = 'Error saving!';
+                    });
+                })
+                .catch(error => console.error('Error fetching image: ', error));
+        }
+    </script>
     <style>
         /* Your CSS styles here */
         @font-face {
@@ -82,60 +136,6 @@
         <!-- Include other days similarly -->
     </tbody>
 </table>
-
-<script>
-    // Your Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyC0qP-Nd2_vUMclBs7t_7LRLJT9lPn7dTk",
-        authDomain: "planner-a66be.firebaseapp.com",
-        projectId: "planner-a66be",
-        storageBucket: "planner-a66be.appspot.com",
-        messagingSenderId: "275446683353",
-        appId: "1:275446683353:web:c7b155b01592b17c9f90c8",
-        measurementId: "G-VZ9BQEMJPN"
-    };
-
-    // Initialize Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const storage = firebase.storage();
-
-    // Function to handle image upload and preview
-    function loadImage(event, imgId) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById(imgId).setAttribute('src', e.target.result);
-        }
-        reader.readAsDataURL(file);
-    }
-
-    // Function to save content to Firebase Storage
-    function saveContent(imageId, socialMediaTextId, notesId) {
-        const imageFile = document.getElementById(imageId).src;
-        const socialMediaText = document.getElementById(socialMediaTextId).innerText;
-        const notes = document.getElementById(notesId).innerText;
-
-        // Generate a unique key for each day's data (you can modify this as per your requirement)
-        const storageRef = storage.ref();
-        const imageRef = storageRef.child(`images/${imageId}`);
-
-        fetch(imageFile)
-            .then(response => response.blob())
-            .then(blob => {
-                imageRef.put(blob).then(() => {
-                    console.log('Image uploaded successfully');
-                    // Display success message
-                    document.getElementById(`successMessage${imageId.slice(-1)}`).innerText = 'Saved successfully!';
-                    // Animate save button
-                    document.getElementById(`saveButton${imageId.slice(-1)}`).classList.add('success-animation');
-                    setTimeout(() => {
-                        document.getElementById(`saveButton${imageId.slice(-1)}`).classList.remove('success-animation');
-                    }, 1000); // Remove animation class after 1 second
-                });
-            })
-            .catch(error => console.error('Error uploading image: ', error));
-    }
-</script>
 
 </body>
 </html>
