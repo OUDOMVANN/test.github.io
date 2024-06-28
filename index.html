@@ -29,6 +29,20 @@
         .social-media-text {
             word-wrap: break-word;
         }
+        .success-animation {
+            animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+        }
+
+        @keyframes scale-up-center {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white p-6">
@@ -58,7 +72,7 @@
             <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
             <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
             <td class="px-6 py-4 border border-gray-600">
-                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img1', 'social-media-text1', 'notes1')">Save</button>
+                <button id="saveButton1" class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img1', 'social-media-text1', 'notes1')">Save</button>
                 <span id="successMessage1" class="text-green-400 font-semibold ml-2"></span>
             </td>
         </tr>
@@ -109,6 +123,11 @@
                     console.log('Image uploaded successfully');
                     // Display success message
                     document.getElementById(`successMessage${imageId.slice(-1)}`).innerText = 'Saved successfully!';
+                    // Animate save button
+                    document.getElementById(`saveButton${imageId.slice(-1)}`).classList.add('success-animation');
+                    setTimeout(() => {
+                        document.getElementById(`saveButton${imageId.slice(-1)}`).classList.remove('success-animation');
+                    }, 1000); // Remove animation class after 1 second
                 });
             })
             .catch(error => console.error('Error uploading image: ', error));
