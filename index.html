@@ -9,7 +9,26 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js"></script>
     <style>
-        /* Your existing CSS styles */
+        @font-face {
+            font-family: 'GT Estis';
+            src: url('path-to-your-font-files/GT-Estis-Regular.woff2') format('woff2'),
+                 url('path-to-your-font-files/GT-Estis-Regular.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'GT Estis', sans-serif;
+        }
+        .image-cell input {
+            display: none;
+        }
+        .image-cell img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+        .social-media-text {
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white p-6">
@@ -23,95 +42,120 @@
             <th class="px-6 py-3 border border-gray-600">Image</th>
             <th class="px-6 py-3 border border-gray-600">Social Media Text</th>
             <th class="px-6 py-3 border border-gray-600">Notes</th>
+            <th class="px-6 py-3 border border-gray-600">Actions</th>
         </tr>
     </thead>
     <tbody>
+        <!-- Monday -->
         <tr>
             <td class="px-6 py-4 border border-gray-600">Monday</td>
             <td class="px-6 py-4 border border-gray-600 image-cell">
                 <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput1').click()">Upload Image</button>
-                <input type="file" id="fileInput1" accept="image/*" onchange="uploadImage(event, 'img1')">
+                <input type="file" id="fileInput1" accept="image/*" onchange="loadImage(event, 'img1')">
                 <br>
                 <img id="img1" src="" alt="">
             </td>
-            <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-            <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img1', 'social-media-text1', 'notes1')">Save</button>
+            </td>
         </tr>
-        
+        <!-- Tuesday -->
         <tr>
-                <td class="px-6 py-4 border border-gray-600">Tuesday</td>
-                <td class="px-6 py-4 border border-gray-600 image-cell">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput2').click()">Upload Image</button>
-                    <input type="file" id="fileInput2" accept="image/*" onchange="loadImage(event, 'img2')">
-                    <br>
-                    <img id="img2" src="" alt="">
-                </td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td class="px-6 py-4 border border-gray-600">Wednesday</td>
-                <td class="px-6 py-4 border border-gray-600 image-cell">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput3').click()">Upload Image</button>
-                    <input type="file" id="fileInput3" accept="image/*" onchange="loadImage(event, 'img3')">
-                    <br>
-                    <img id="img3" src="" alt="">
-                </td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td class="px-6 py-4 border border-gray-600">Thursday</td>
-                <td class="px-6 py-4 border border-gray-600 image-cell">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput4').click()">Upload Image</button>
-                    <input type="file" id="fileInput4" accept="image/*" onchange="loadImage(event, 'img4')">
-                    <br>
-                    <img id="img4" src="" alt="">
-                </td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td class="px-6 py-4 border border-gray-600">Friday</td>
-                <td class="px-6 py-4 border border-gray-600 image-cell">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput5').click()">Upload Image</button>
-                    <input type="file" id="fileInput5" accept="image/*" onchange="loadImage(event, 'img5')">
-                    <br>
-                    <img id="img5" src="" alt="">
-                </td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td class="px-6 py-4 border border-gray-600">Saturday</td>
-                <td class="px-6 py-4 border border-gray-600 image-cell">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput6').click()">Upload Image</button>
-                    <input type="file" id="fileInput6" accept="image/*" onchange="loadImage(event, 'img6')">
-                    <br>
-                    <img id="img6" src="" alt="">
-                </td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-            </tr>
-            <tr>
-                <td class="px-6 py-4 border border-gray-600">Sunday</td>
-                <td class="px-6 py-4 border border-gray-600 image-cell">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput7').click()">Upload Image</button>
-                    <input type="file" id="fileInput7" accept="image/*" onchange="loadImage(event, 'img7')">
-                    <br>
-                    <img id="img7" src="" alt="">
-                </td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-                <td class="px-6 py-4 border border-gray-600" contenteditable="true"></td>
-            </tr>
-
+            <td class="px-6 py-4 border border-gray-600">Tuesday</td>
+            <td class="px-6 py-4 border border-gray-600 image-cell">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput2').click()">Upload Image</button>
+                <input type="file" id="fileInput2" accept="image/*" onchange="loadImage(event, 'img2')">
+                <br>
+                <img id="img2" src="" alt="">
+            </td>
+            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img2', 'social-media-text2', 'notes2')">Save</button>
+            </td>
+        </tr>
+        <!-- Wednesday -->
+        <tr>
+            <td class="px-6 py-4 border border-gray-600">Wednesday</td>
+            <td class="px-6 py-4 border border-gray-600 image-cell">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput3').click()">Upload Image</button>
+                <input type="file" id="fileInput3" accept="image/*" onchange="loadImage(event, 'img3')">
+                <br>
+                <img id="img3" src="" alt="">
+            </td>
+            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img3', 'social-media-text3', 'notes3')">Save</button>
+            </td>
+        </tr>
+        <!-- Thursday -->
+        <tr>
+            <td class="px-6 py-4 border border-gray-600">Thursday</td>
+            <td class="px-6 py-4 border border-gray-600 image-cell">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput4').click()">Upload Image</button>
+                <input type="file" id="fileInput4" accept="image/*" onchange="loadImage(event, 'img4')">
+                <br>
+                <img id="img4" src="" alt="">
+            </td>
+            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img4', 'social-media-text4', 'notes4')">Save</button>
+            </td>
+        </tr>
+        <!-- Friday -->
+        <tr>
+            <td class="px-6 py-4 border border-gray-600">Friday</td>
+            <td class="px-6 py-4 border border-gray-600 image-cell">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput5').click()">Upload Image</button>
+                <input type="file" id="fileInput5" accept="image/*" onchange="loadImage(event, 'img5')">
+                <br>
+                <img id="img5" src="" alt="">
+            </td>
+            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img5', 'social-media-text5', 'notes5')">Save</button>
+            </td>
+        </tr>
+        <!-- Saturday -->
+        <tr>
+            <td class="px-6 py-4 border border-gray-600">Saturday</td>
+            <td class="px-6 py-4 border border-gray-600 image-cell">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput6').click()">Upload Image</button>
+                <input type="file" id="fileInput6" accept="image/*" onchange="loadImage(event, 'img6')">
+                <br>
+                <img id="img6" src="" alt="">
+            </td>
+            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img6', 'social-media-text6', 'notes6')">Save</button>
+            </td>
+        </tr>
+        <!-- Sunday -->
+        <tr>
+            <td class="px-6 py-4 border border-gray-600">Sunday</td>
+            <td class="px-6 py-4 border border-gray-600 image-cell">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput7').click()">Upload Image</button>
+                <input type="file" id="fileInput7" accept="image/*" onchange="loadImage(event, 'img7')">
+                <br>
+                <img id="img7" src="" alt="">
+            </td>
+            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
+            <td class="px-6 py-4 border border-gray-600">
+                <button class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img7', 'social-media-text7', 'notes7')">Save</button>
+            </td>
+        </tr>
     </tbody>
 </table>
 
-<button class="bg-red-600 text-white px-4 py-2 rounded" onclick="confirmReset()">Reset All</button>
-
 <script>
-    // Initialize Firebase
+    // Your Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyC0qP-Nd2_vUMclBs7t_7LRLJT9lPn7dTk",
         authDomain: "planner-a66be.firebaseapp.com",
@@ -121,70 +165,42 @@
         appId: "1:275446683353:web:c7b155b01592b17c9f90c8",
         measurementId: "G-VZ9BQEMJPN"
     };
+
+    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const storage = firebase.storage();
 
-    function uploadImage(event, imgId) {
+    // Function to handle image upload and preview
+    function loadImage(event, imgId) {
         const file = event.target.files[0];
-        const storageRef = storage.ref('images/' + file.name);
-
-        storageRef.put(file).then(() => {
-            console.log('File uploaded successfully!');
-            storageRef.getDownloadURL().then(url => {
-                const imgElement = document.getElementById(imgId);
-                imgElement.src = url;
-                localStorage.setItem(imgId, url);
-            });
-        }).catch(error => {
-            console.error('Error uploading file: ', error);
-        });
-    }
-
-    function confirmReset() {
-        if (confirm("Are you sure you want to reset all the content?")) {
-            resetAll();
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById(imgId).setAttribute('src', e.target.result);
         }
+        reader.readAsDataURL(file);
     }
 
-    function resetAll() {
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            img.src = '';
-            localStorage.removeItem(img.id);
-        });
+    // Function to save content to Firebase Storage
+    function saveContent(imageId, socialMediaTextId, notesId) {
+        const imageFile = document.getElementById(imageId).src;
+        const socialMediaText = document.getElementById(socialMediaTextId).innerText;
+        const notes = document.getElementById(notesId).innerText;
 
-        const editableCells = document.querySelectorAll('[contenteditable="true"]');
-        editableCells.forEach((cell, index) => {
-            cell.innerHTML = '';
-            localStorage.removeItem(`editableCell${index}`);
-        });
+        // Generate a unique key for each day's data (you can modify this as per your requirement)
+        const storageRef = storage.ref();
+        const imageRef = storageRef.child(`images/${imageId}`);
 
-        const fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach(input => input.value = '');
+        fetch(imageFile)
+            .then(response => response.blob())
+            .then(blob => {
+                imageRef.put(blob).then(() => {
+                    console.log('Image uploaded successfully');
+                    // You can add further logic here, such as saving social media text and notes to a database
+                    // or displaying a success message to the user
+                });
+            })
+            .catch(error => console.error('Error uploading image: ', error));
     }
-
-    // Restore saved images from localStorage on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            const savedImage = localStorage.getItem(img.id);
-            if (savedImage) {
-                img.src = savedImage;
-            }
-        });
-
-        const editableCells = document.querySelectorAll('[contenteditable="true"]');
-        editableCells.forEach((cell, index) => {
-            const savedText = localStorage.getItem(`editableCell${index}`);
-            if (savedText) {
-                cell.innerHTML = savedText;
-            }
-
-            cell.addEventListener('input', () => {
-                localStorage.setItem(`editableCell${index}`, cell.innerHTML);
-            });
-        });
-    });
 </script>
 
 </body>
