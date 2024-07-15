@@ -3,139 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Planner</title>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyC0qP-Nd2_vUMclBs7t_7LRLJT9lPn7dTk",
-            authDomain: "planner-a66be.firebaseapp.com",
-            projectId: "planner-a66be",
-            storageBucket: "planner-a66be.appspot.com",
-            messagingSenderId: "275446683353",
-            appId: "1:275446683353:web:c7b155b01592b17c9f90c8",
-            measurementId: "G-VZ9BQEMJPN"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const storage = getStorage(app);
-
-        // Function to handle image upload and preview
-        function loadImage(event, imgId) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById(imgId).setAttribute('src', e.target.result);
-            }
-            reader.readAsDataURL(file);
-        }
-
-        // Function to save content to Firebase Storage
-        function saveContent(imageId, socialMediaTextId, notesId) {
-            const imageFile = document.getElementById(imageId).src;
-            const socialMediaText = document.getElementById(socialMediaTextId).innerText;
-            const notes = document.getElementById(notesId).innerText;
-
-            // Generate a unique key for each day's data (you can modify this as per your requirement)
-            const storageRef = ref(storage, `images/${imageId}`);
-
-            fetch(imageFile)
-                .then(response => response.blob())
-                .then(blob => {
-                    uploadBytes(storageRef, blob).then(() => {
-                        console.log('Image uploaded successfully');
-                        // Display success message
-                        document.getElementById(`successMessage${imageId.slice(-1)}`).innerText = 'Saved successfully!';
-                        // Animate save button
-                        document.getElementById(`saveButton${imageId.slice(-1)}`).classList.add('success-animation');
-                        setTimeout(() => {
-                            document.getElementById(`saveButton${imageId.slice(-1)}`).classList.remove('success-animation');
-                        }, 1000); // Remove animation class after 1 second
-                    }).catch(error => {
-                        console.error('Error uploading image: ', error);
-                        document.getElementById(`successMessage${imageId.slice(-1)}`).innerText = 'Error saving!';
-                    });
-                })
-                .catch(error => console.error('Error fetching image: ', error));
-        }
-    </script>
+    <title>Job Posting Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        /* Your CSS styles here */
-        @font-face {
-            font-family: 'GT Estis';
-            src: url('path-to-your-font-files/GT-Estis-Regular.woff2') format('woff2'),
-                 url('path-to-your-font-files/GT-Estis-Regular.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=GT+Eesti+Text:wght@400&display=swap');
+
         body {
-            font-family: 'GT Estis', sans-serif;
-            background-color: #1a202c; /* Adjust to your preference */
-            color: #ffffff; /* Adjust to your preference */
-            padding: 20px;
+            font-family: 'GT Eesti Text Regular', sans-serif;
         }
-        .image-cell input {
-            display: none;
+        .btn-teal {
+            background-color: #008080;
         }
-        .image-cell img {
-            max-width: 100px;
-            max-height: 100px;
+        .btn-teal:hover {
+            background-color: #007373;
         }
-        .social-media-text {
-            word-wrap: break-word;
+        .text-teal {
+            color: #008080;
         }
-        .success-animation {
-            animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+        .text-tomato {
+            color: #FF6347;
         }
-        @keyframes scale-up-center {
-            0% {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .text-dark-blue {
+            color: #00008B;
+        }
+        .bg-gray-100 {
+            background-color: #F7FAFC;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 p-8">
 
-<h1 class="text-3xl font-bold mb-6">Weekly Planner</h1>
+<form id="jobPostingForm" class="bg-white p-8 rounded shadow-md">
+    <div class="mb-4">
+        <label for="schoolName" class="block text-dark-blue font-bold mb-2">School Name:</label>
+        <input type="text" id="schoolName" name="schoolName" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+    </div>
+    <div class="mb-4">
+        <label for="schoolDescription" class="block text-dark-blue font-bold mb-2">School Description:</label>
+        <textarea id="schoolDescription" name="schoolDescription" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+    </div>
+    <div class="mb-4">
+        <label for="city" class="block text-dark-blue font-bold mb-2">City:</label>
+        <input type="text" id="city" name="city" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+    </div>
+    <div class="mb-4">
+        <label for="cityPageLink" class="block text-dark-blue font-bold mb-2">City Page Link:</label>
+        <input type="url" id="cityPageLink" name="cityPageLink" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+    </div>
+    <div class="mb-4">
+        <label for="country" class="block text-dark-blue font-bold mb-2">Country:</label>
+        <input type="text" id="country" name="country" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+    </div>
+    <div class="mb-4">
+        <label for="countryPageLink" class="block text-dark-blue font-bold mb-2">Country Page Link:</label>
+        <input type="url" id="countryPageLink" name="countryPageLink" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+    </div>
+    <div class="mb-4">
+        <label for="schoolEmail" class="block text-dark-blue font-bold mb-2">School Email:</label>
+        <input type="email" id="schoolEmail" name="schoolEmail" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+    </div>
+    <button type="button" onclick="generateJobPosting()" class="btn-teal hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Generate Job Posting</button>
+</form>
 
-<table class="min-w-full bg-gray-800 border border-gray-700 mb-6">
-    <thead>
-        <tr class="bg-gray-700">
-            <th class="px-6 py-3 border border-gray-600">Date</th>
-            <th class="px-6 py-3 border border-gray-600">Image</th>
-            <th class="px-6 py-3 border border-gray-600">Social Media Text</th>
-            <th class="px-6 py-3 border border-gray-600">Notes</th>
-            <th class="px-6 py-3 border border-gray-600">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Monday -->
-        <tr>
-            <td class="px-6 py-4 border border-gray-600">Monday</td>
-            <td class="px-6 py-4 border border-gray-600 image-cell">
-                <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="document.getElementById('fileInput1').click()">Upload Image</button>
-                <input type="file" id="fileInput1" accept="image/*" onchange="loadImage(event, 'img1')">
-                <br>
-                <img id="img1" src="" alt="">
-            </td>
-            <td class="px-6 py-4 border border-gray-600 social-media-text" contenteditable="true"></td>
-            <td class="px-6 py-4 border border-gray-600 notes" contenteditable="true"></td>
-            <td class="px-6 py-4 border border-gray-600">
-                <button id="saveButton1" class="bg-green-600 text-white px-4 py-2 rounded" onclick="saveContent('img1', 'social-media-text1', 'notes1')">Save</button>
-                <span id="successMessage1" class="text-green-400 font-semibold ml-2"></span>
-            </td>
-        </tr>
-        <!-- Include other days similarly -->
-    </tbody>
-</table>
+<div id="jobPostingPreview" class="mt-8 p-8 bg-white rounded shadow-md hidden">
+    <h3 class="text-dark-blue font-bold mb-4">Job Posting Preview</h3>
+    <div id="jobPostingContent" class="mb-4"></div>
+    <textarea id="jobPostingHTML" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-64"></textarea>
+</div>
+
+<script>
+    function generateJobPosting() {
+        const form = document.getElementById('jobPostingForm');
+        const schoolName = document.getElementById('schoolName').value.trim();
+        const schoolDescription = document.getElementById('schoolDescription').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const cityPageLink = document.getElementById('cityPageLink').value.trim();
+        const country = document.getElementById('country').value.trim();
+        const countryPageLink = document.getElementById('countryPageLink').value.trim();
+        const schoolEmail = document.getElementById('schoolEmail').value.trim();
+
+        if (schoolName && schoolDescription && city && cityPageLink && country && countryPageLink && schoolEmail) {
+            const jobPostingContent = `
+                <div>
+                    <p>${schoolName} is advertising for a qualified JOB to join their team in August 2024.</p>
+
+                    <h4 class="h6">Applicant Requirements:</h4>
+                    <ul class="list-disc ml-8 mt-4">
+                        <li>At least 2 years of teaching experience</li>
+                        <li>Teaching qualification/certification</li>
+                    </ul>
+
+                    <p>${schoolDescription}</p>
+                    <p>Have a read of the <a href="${cityPageLink}" target="_blank">${city}</a> and <a href="${countryPageLink}" target="_blank">${country}</a> pages for more information!</p>
+                    <p>This school has requested that interested teachers email their expressions of interest directly to them.</p>
+                    <p style="text-align: center">
+                        <a class="btn btn-coral" href="mailto:${schoolEmail}" target="_blank">Click here to email your expression of interest to the school</a>
+                    </p>
+
+                    <h4 class="h6">Top Tips</h4>
+                    <ul class="list-disc ml-8 mt-4">
+                        <li>Don’t forget to include your CV.</li>
+                        <li>Inform the school you heard about this vacancy through Teacher Horizons so the school can access your profile and references should they wish.</li>
+                        <li>Ensure your profile is complete with at least two references from professional email addresses.</li>
+                    </ul>
+
+                    <p>
+                        Please inform us if you secure a position through Teacher Horizons - this helps us keep track of and improve our services. Simply email <a href="mailto:info@teacherhorizons.com"> info@teacherhorizons.com.</a>
+                    </p>
+                    
+                    <p>
+                        You can find out more about <a href="https://www.teacherhorizons.com/advice/international-teaching-opportunities" target="_blank">how Teacher Horizons works here</a> and <a href="https://www.teacherhorizons.com/me" rel="nofollow" target="_blank">update your profile here</a>.
+                    </p>
+                    <p>Best of luck!</p>
+                    <p>The Teacher Horizons team</p>
+                    <p><i>
+                        Please note that Teacher Horizons is committed to safeguarding and promoting the welfare of children. Applicants must be willing to undergo child protection screening, including a criminal record disclosure and other standard pre-employment safeguarding checks.
+                    </i></p>
+                </div>
+            `;
+
+            document.getElementById('jobPostingContent').innerHTML = jobPostingContent;
+            document.getElementById('jobPostingHTML').value = jobPostingContent;
+            document.getElementById('jobPostingPreview').classList.remove('hidden');
+        } else {
+            alert('All fields are required. Please fill in all the fields.');
+        }
+    }
+</script>
 
 </body>
 </html>
